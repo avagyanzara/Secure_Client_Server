@@ -23,7 +23,6 @@ void listen_socket(const Socket server_socket);
 Socket accept_client(struct sockaddr_storage *client_address, const Socket server_socket);
 
 char *receive_message(const Socket socket, int *size);
-//int send_message(const Socket socket, const char *message);
 int send_message(const Socket socket, const char *message, const int size);
 
 #endif // __SOCKET_H__

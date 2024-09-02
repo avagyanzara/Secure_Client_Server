@@ -87,7 +87,7 @@ void handle_client_requests(const Socket socket, fd_set *main_set, fd_set *read_
     if (0 == send_message(socket, encrypted_message, size)) {
         printf("[%s] Closing connection...\n", timestamp());
     }
-    close_socket(socket); // TODO, handle errors
+    close_socket(socket);
     FD_CLR(socket, main_set);
     FD_CLR(socket, read_set);
 }

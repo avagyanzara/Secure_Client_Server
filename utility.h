@@ -11,7 +11,7 @@
 #include <stdbool.h>
 
 #define HARD_ASSERT(condition, message) do {              \
-    if (!(condition)) {                                     \
+    if (!(condition)) {                                   \
         printf("%s, %s:%d", message, __FILE__, __LINE__); \
         abort();                                          \
     }                                                     \

@@ -26,22 +26,24 @@ void configure_address(struct addrinfo **bind_address, const char *ip_address, c
 
 Socket create_server_socket(struct addrinfo *bind_address)
 {
+    HARD_ASSERT(bind_address != NULL, "Bind address is null.");
     Socket new_socket = socket(bind_address->ai_family, bind_address->ai_socktype, bind_address->ai_protocol);
+
     if (!is_valid_socket(new_socket)) {
         exit_with_error_message("Failed to create socket", errno);
     }
-
-    freeaddrinfo(bind_address);
 
     if (bind(new_socket, bind_address->ai_addr, bind_address->ai_addrlen)) {
         exit_with_error_message("Failed to bind socket", errno);
     }
 
+    freeaddrinfo(bind_address);
     return new_socket;
 }
 
 Socket create_client_socket(struct addrinfo *peer_address, const int connection_attempt_count, const int attempt_interval)
 {
+    HARD_ASSERT(peer_address != NULL, "Peer address is null.");
     Socket new_socket = socket(peer_address->ai_family, peer_address->ai_socktype, peer_address->ai_protocol);
     if (!is_valid_socket(new_socket)) {
         exit_with_error_message("Failed to create socket", errno);
@@ -60,7 +62,7 @@ Socket create_client_socket(struct addrinfo *peer_address, const int connection_
     freeaddrinfo(peer_address);
    
     if (return_code != 0) {
-        exit_with_error_message("Failed to connect to server", 7);
+        exit_with_error_message("Failed to connect to server", SOCKET_RECEIVE_FAILURE_CODE);
     }
 
     return new_socket;
@@ -145,11 +147,4 @@ int send_message(const Socket socket, const char *message, const int size)
     HARD_ASSERT(bytes_sent == total_bytes, "Sent data is corrupted");
     return 1;
 }
-
-/* 
-int send_message(const Socket socket, const char *message)
-{
-    return send_message(socket, message, strlen(message));
-}
-*/
 
